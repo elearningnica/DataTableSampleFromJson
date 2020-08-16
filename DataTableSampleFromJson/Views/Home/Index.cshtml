@@ -3,6 +3,7 @@
 }
 
 <link href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/font-awesome.min.css" rel="stylesheet" />
 
 @section Scripts {
     <script src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
@@ -25,8 +26,19 @@
                     { "data": "userId", "autoWidth": true },
                     { "data": "id", "autoWidth": true },
                     { "data": "title", "autoWidth": true },
-                    { "data": "completed", "autoWidth": true }
+                    { "data": "completed", "autoWidth": true },
+                    {
+                        "data": "id", "width": "50px", "render": function (data) {
+                            return '<button type="button" id="' + data + '" class="btn btn-primary btnEdit"><i class="fa fa-edit"></i></button>'
+                        }
+                    }
                 ]
+            });
+
+            $(document).on("click", ".btnEdit", function () {
+                var id = $(this).attr("id");
+
+                alert(id);
             });
         });
     </script>
@@ -42,6 +54,7 @@
             <th>id</th>
             <th>title</th>
             <th>completed</th>
+            <th></th>
         </tr>
     </thead>
 </table>
