@@ -30,9 +30,28 @@ namespace DataTableSampleFromJson.Controllers
             }
         }
 
+        private async Task<List<posts>> getPosts(int id)
+        {
+            using (var cliente = new HttpClient())
+            {
+                var respuesta = await cliente.GetAsync("https://jsonplaceholder.typicode.com/posts?userId=" + id); //posts by user
+
+                var contenido = await respuesta.Content.ReadAsStringAsync();
+
+                var datos = JsonConvert.DeserializeObject<List<posts>>(contenido);
+                return datos;
+            }
+        }
+
         public async Task<ActionResult> loadData()
         {
             var data = await getData();
+            return Json(new { data = data }, JsonRequestBehavior.AllowGet);
+        }
+
+        public async Task<ActionResult> loadPosts(int id)
+        {
+            var data = await getPosts(id);
             return Json(new { data = data }, JsonRequestBehavior.AllowGet);
         }
 

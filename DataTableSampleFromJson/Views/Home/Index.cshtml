@@ -3,6 +3,7 @@
 }
 
 <link href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/font-awesome.min.css" rel="stylesheet" />
 
 @section Scripts {
     <script src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
@@ -25,8 +26,38 @@
                     { "data": "userId", "autoWidth": true },
                     { "data": "id", "autoWidth": true },
                     { "data": "title", "autoWidth": true },
-                    { "data": "completed", "autoWidth": true }
+                    { "data": "completed", "autoWidth": true },
+                    {
+                        "data": "userId", "width": "50px", "render": function (data) {
+                            return '<button type="button" id="' + data + '" class="btn btn-primary btnPosts"><i class="fa fa-eye"></i></button>'
+                        }
+                    }
                 ]
+            });
+
+            $(document).on("click", ".btnPosts", function () {
+                var id = $(this).attr("id");
+
+                $('#table_posts').DataTable({
+                    "info": true,
+                    "processing": true,
+                    "order": [[1, "desc"]],
+                    "bDestroy": true,
+                    "ajax": {
+                        "url": "Home/loadPosts",
+                        "type": "GET",
+                        "datatype": "json",
+                        "data": { id: id }
+                    },
+                    "rowCallback": function (row, data, index) {
+                    },
+                    "columns": [
+                        { "data": "userId", "autoWidth": true },
+                        { "data": "id", "autoWidth": true },
+                        { "data": "title", "autoWidth": true },
+                        { "data": "body", "autoWidth": true }
+                    ]
+                });
             });
         });
     </script>
@@ -42,6 +73,18 @@
             <th>id</th>
             <th>title</th>
             <th>completed</th>
+            <th></th>
+        </tr>
+    </thead>
+</table>
+
+<table id="table_posts">
+    <thead>
+        <tr>
+            <th>userId</th>
+            <th>id</th>
+            <th>title</th>
+            <th>body</th>
         </tr>
     </thead>
 </table>
